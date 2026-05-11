@@ -5,5 +5,6 @@ import { browserStackProvider } from './cloud/browserstack.provider';
 
 export function getProvider(providerName: string, platform: string): SessionProvider {
   if (providerName === 'browserstack') return browserStackProvider;
+  if (providerName === 'lambdatest') return lambdaTestProvider;
   return platform === 'browser' ? localBrowserProvider : localAppiumProvider;
 }
