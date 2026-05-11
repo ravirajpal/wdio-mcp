@@ -18,18 +18,18 @@ export const startSessionToolDefinition: ToolDefinition = {
   description: 'Starts a browser or mobile automation session. Only one active session at a time — starting a new one closes the existing session first. Use platform "browser" with a browser name, or "ios"/"android" with deviceName. Set attach: true to connect to a running Chrome via CDP instead of launching a new browser.',
   annotations: { title: 'Start Session', destructiveHint: false },
   inputSchema: {
-    provider: z.enum(['local', 'browserstack']).optional().default('local').describe('Session provider (default: local)'),
+    provider: z.enum(['local', 'browserstack', 'lambdatest']).optional().default('local').describe('Session provider (default: local)'),
     platform: platformEnum.describe('Session platform type'),
     browser: browserEnum.optional().describe('Browser to launch (required for browser platform)'),
     browserVersion: z.string().optional().describe('Browser version (BrowserStack only, default: latest)'),
     os: z.string().optional().describe('Operating system (BrowserStack browser only, e.g. "Windows", "OS X")'),
     osVersion: z.string().optional().describe('OS version (BrowserStack browser only, e.g. "11", "Sequoia")'),
-    app: z.string().optional().describe('BrowserStack app URL (bs://...) or custom_id for mobile sessions'),
+    app: z.string().optional().describe('App URL for cloud providers — bs://... for BrowserStack, lt://... for LambdaTest'),
     reporting: z.object({
       project: z.string().optional(),
       build: z.string().optional(),
       session: z.string().optional(),
-    }).optional().describe('BrowserStack reporting labels (project, build, session)'),
+    }).optional().describe('Cloud provider reporting labels (project, build, session)'),
     headless: coerceBoolean.optional().default(true).describe('Run browser in headless mode (default: true)'),
     windowWidth: z.number().min(400).max(3840).optional().default(1920).describe('Browser window width'),
     windowHeight: z.number().min(400).max(2160).optional().default(1080).describe('Browser window height'),
@@ -63,7 +63,7 @@ export const startSessionToolDefinition: ToolDefinition = {
 };
 
 type StartSessionArgs = {
-  provider?: 'local' | 'browserstack';
+  provider?: 'local' | 'browserstack' | 'lambdatest';
   platform: 'browser' | 'ios' | 'android';
   browser?: 'chrome' | 'firefox' | 'edge' | 'safari';
   browserVersion?: string;
