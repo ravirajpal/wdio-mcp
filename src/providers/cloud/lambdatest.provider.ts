@@ -3,12 +3,10 @@ import type { ConnectionConfig, SessionProvider, SessionResult } from '../types'
 export class LambdaTestProvider implements SessionProvider {
   name = 'lambdatest';
 
-  getConnectionConfig(options: Record<string, unknown>): ConnectionConfig {
-    const platform = options.platform as string;
-    const hostname = 'hub.lambdatest.com';
+  getConnectionConfig(_options: Record<string, unknown>): ConnectionConfig {
     return {
       protocol: 'https',
-      hostname,
+      hostname: 'mobile-hub.lambdatest.com',
       port: 443,
       path: '/wd/hub',
       user: process.env.LT_USERNAME,
@@ -19,59 +17,63 @@ export class LambdaTestProvider implements SessionProvider {
   buildCapabilities(options: Record<string, unknown>): Record<string, unknown> {
     const platform = options.platform as string;
     const userCapabilities = (options.capabilities as Record<string, unknown> | undefined) ?? {};
+    const reporting = options.reporting as { project?: string; build?: string; session?: string } | undefined;
 
-    if (platform === 'browser') {
-      const ltOptions: Record<string, unknown> = {
-        platformName: options.os as string | undefined,
-      };
-      if (options.browserVersion) ltOptions.browserVersion = options.browserVersion;
-      if (options.osVersion) ltOptions.osVersion = options.osVersion;
+    const ltOptions: Record<string, unknown> = {
+      w3c: true,
+      username: process.env.LT_USERNAME,
+      accessKey: process.env.LT_ACCESS_KEY,
+      isRealMobile: true,
+      acceptInsecureCerts: true,
+    };
 
-      const reporting = options.reporting as { project?: string; build?: string; session?: string } | undefined;
-      if (reporting?.project) ltOptions.projectName = reporting.project;
-      if (reporting?.build) ltOptions.buildName = reporting.build;
-      if (reporting?.session) ltOptions.sessionName = reporting.session;
+    if (reporting?.project) ltOptions.project = reporting.project;
+    if (reporting?.build) ltOptions.build = reporting.build;
+    if (reporting?.session) ltOptions.name = reporting.session;
+
+    if (platform === 'android') {
+      ltOptions.platformName = 'android';
+      if (options.deviceName) ltOptions.deviceName = options.deviceName;
+      if (options.platformVersion) ltOptions.platformVersion = options.platformVersion;
+      ltOptions.automationName = (options.automationName as string | undefined) ?? 'UiAutomator2';
+      ltOptions.enableImageInjection = true;
+      ltOptions.enableBiometricsAuthentication = true;
+      if (options.autoGrantPermissions !== false) ltOptions.autoGrantPermissions = true;
 
       return {
-        browserName: (options.browser as string | undefined) ?? 'chrome',
-        'lt:options': ltOptions,
+        platformName: 'android',
+        'appium:app': options.app,
+        'appium:newCommandTimeout': (options.newCommandTimeout as number | undefined) ?? 300,
+        'LT:options': ltOptions,
         ...userCapabilities,
       };
     }
 
-    // Mobile (ios / android)
-    const ltOptions: Record<string, unknown> = {
-      platformName: platform,
-      deviceName: options.deviceName,
-      platformVersion: options.platformVersion,
-      isRealMobile: true,
-      appiumVersion: '2.0.0',
-    };
-
-    const reporting = options.reporting as { project?: string; build?: string; session?: string } | undefined;
-    if (reporting?.project) ltOptions.projectName = reporting.project;
-    if (reporting?.build) ltOptions.buildName = reporting.build;
-    if (reporting?.session) ltOptions.sessionName = reporting.session;
-
-    const autoAcceptAlerts = options.autoAcceptAlerts as boolean | undefined;
-    const autoDismissAlerts = options.autoDismissAlerts as boolean | undefined;
+    // iOS
+    ltOptions.platformName = 'ios';
+    if (options.deviceName) ltOptions.deviceName = options.deviceName;
+    if (options.platformVersion) ltOptions.platformVersion = options.platformVersion;
+    ltOptions.enableImageInjection = true;
+    ltOptions.enableBiometricsAuthentication = true;
+    ltOptions.autoAcceptAlerts = false;
 
     return {
-      platformName: platform,
+      platformName: 'ios',
       'appium:app': options.app,
-      'appium:autoGrantPermissions': (options.autoGrantPermissions as boolean | undefined) ?? true,
-      'appium:autoAcceptAlerts': autoDismissAlerts ? undefined : (autoAcceptAlerts ?? true),
-      'appium:autoDismissAlerts': autoDismissAlerts,
       'appium:newCommandTimeout': (options.newCommandTimeout as number | undefined) ?? 300,
-      'lt:options': ltOptions,
+      'appium:settings': {
+        respectSystemAlerts: true,
+        fixImageTemplateScale: true,
+      },
+      'appium:acceptAlertButtonSelector':
+        '**/XCUIElementTypeButton[`name == "Allow Once" OR name == "Allow" OR name == "Allow While Using App" OR name == "OK"`]',
+      'LT:options': ltOptions,
       ...userCapabilities,
     };
   }
 
   getSessionType(options: Record<string, unknown>): 'browser' | 'ios' | 'android' {
-    const platform = options.platform as string;
-    if (platform === 'browser') return 'browser';
-    return platform as 'ios' | 'android';
+    return options.platform as 'ios' | 'android';
   }
 
   shouldAutoDetach(_options: Record<string, unknown>): boolean {
@@ -80,23 +82,31 @@ export class LambdaTestProvider implements SessionProvider {
 
   async onSessionClose(
     sessionId: string,
-    sessionType: 'browser' | 'ios' | 'android',
+    _sessionType: 'browser' | 'ios' | 'android',
     result: SessionResult,
-    _tunnelHandle?: unknown,
   ): Promise<void> {
     const user = process.env.LT_USERNAME;
     const key = process.env.LT_ACCESS_KEY;
     if (!user || !key) return;
 
-    const baseUrl = 'https://api.lambdatest.com/automation/api/v1/sessions';
-
     const auth = Buffer.from(`${user}:${key}`).toString('base64');
-    const body: Record<string, string> = { status: result.status, ...(result.reason ? { reason: result.reason } : {}) };
-    await fetch(`${baseUrl}/${sessionId}`, {
-      method: 'PATCH',
-      headers: { Authorization: `Basic ${auth}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+    const statusMap: Record<string, string> = { passed: 'passed', failed: 'failed' };
+
+    try {
+      await fetch(`https://api.lambdatest.com/automation/api/v1/sessions/${sessionId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Basic ${auth}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status_ind: statusMap[result.status] ?? 'failed',
+          ...(result.reason ? { reason: result.reason } : {}),
+        }),
+      });
+    } catch {
+      // Non-fatal — session already ended
+    }
   }
 }
 
