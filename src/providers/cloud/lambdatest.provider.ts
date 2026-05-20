@@ -18,6 +18,7 @@ export class LambdaTestProvider implements SessionProvider {
     const platform = options.platform as string;
     const userCapabilities = (options.capabilities as Record<string, unknown> | undefined) ?? {};
     const reporting = options.reporting as { project?: string; build?: string; session?: string } | undefined;
+    const uploadMedia = options.uploadMedia as string[] | undefined;
 
     const ltOptions: Record<string, unknown> = {
       w3c: true,
@@ -30,6 +31,7 @@ export class LambdaTestProvider implements SessionProvider {
     if (reporting?.project) ltOptions.project = reporting.project;
     if (reporting?.build) ltOptions.build = reporting.build;
     if (reporting?.session) ltOptions.name = reporting.session;
+    if (uploadMedia && uploadMedia.length > 0) ltOptions.uploadMedia = uploadMedia;
 
     if (platform === 'android') {
       ltOptions.platformName = 'android';
