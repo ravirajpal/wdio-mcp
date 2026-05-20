@@ -68,7 +68,7 @@ import {
 import { switchTabTool, switchTabToolDefinition } from './tools/tabs.tool';
 import { switchFrameTool, switchFrameToolDefinition } from './tools/switch-frame.tool';
 import { listAppsTool, listAppsToolDefinition, uploadAppTool, uploadAppToolDefinition, } from './tools/browserstack.tool';
-import { listLTAppsTool, listLTAppsToolDefinition, uploadLTAppTool, uploadLTAppToolDefinition } from './tools/lambdatest.tool';
+import { listLTAppsTool, listLTAppsToolDefinition, uploadLTAppTool, uploadLTAppToolDefinition, injectLTImageTool, injectLTImageToolDefinition } from './tools/lambdatest.tool';
 import { screenshotTool, screenshotToolDefinition } from './tools/screenshot.tool';
 import { accessibilityTool, accessibilityToolDefinition } from './tools/accessibility.tool';
 import { getTabsTool, getTabsToolDefinition } from './tools/get-tabs.tool';
@@ -155,6 +155,7 @@ function createServer(): McpServer {
   registerTool(uploadAppToolDefinition, uploadAppTool);
   registerTool(listLTAppsToolDefinition, listLTAppsTool);
   registerTool(uploadLTAppToolDefinition, uploadLTAppTool);
+  registerTool(injectLTImageToolDefinition, injectLTImageTool);
 
   registerTool(screenshotToolDefinition, screenshotTool);
   registerTool(accessibilityToolDefinition, accessibilityTool);
