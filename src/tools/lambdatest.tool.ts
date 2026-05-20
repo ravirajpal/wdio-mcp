@@ -2,6 +2,7 @@ import { existsSync, createReadStream } from 'node:fs';
 import { z } from 'zod';
 import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { ToolDefinition } from '../types/tool';
+import { getBrowser } from '../session/state';
 
 const LT_API = 'https://manual-api.lambdatest.com';
 
@@ -131,5 +132,28 @@ export const uploadLTAppTool: ToolCallback = async ({ path, name }: { path: stri
     };
   } catch (e) {
     return { isError: true as const, content: [{ type: 'text' as const, text: `Error uploading app: ${e}` }] };
+  }
+};
+
+// ─── lt_inject_image ──────────────────────────────────────────────────────────
+
+export const injectLTImageToolDefinition: ToolDefinition = {
+  name: 'lt_inject_image',
+  description: 'Injects a media file into the LambdaTest real device camera stream using lambda-image-injection. Use for testing QR scanning, document capture, photo upload flows. Requires enableImageInjection: true in session capabilities (already set by default).',
+  annotations: { title: 'LambdaTest Image Injection', destructiveHint: false },
+  inputSchema: {
+    mediaUrl: z.string().url().describe('Publicly accessible URL of the image or video to inject into the camera stream'),
+  },
+};
+
+export const injectLTImageTool: ToolCallback = async ({ mediaUrl }: { mediaUrl: string }): Promise<CallToolResult> => {
+  try {
+    const browser = getBrowser();
+    await browser.execute(`lambda-image-injection=${mediaUrl}`);
+    return {
+      content: [{ type: 'text' as const, text: `Image injection successful. "${mediaUrl}" is now streaming to the device camera.` }],
+    };
+  } catch (e) {
+    return { isError: true as const, content: [{ type: 'text' as const, text: `Error injecting image: ${e}` }] };
   }
 };
