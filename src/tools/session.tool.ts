@@ -58,6 +58,7 @@ export const startSessionToolDefinition: ToolDefinition = {
     }).optional().describe('Appium server connection (local provider only)'),
     browserstackLocal: z.union([coerceBoolean, z.literal('external')]).optional().default(false).describe('Enable BrowserStack Local tunnel routing (BrowserStack only, default: false). true = auto-start tunnel before session and stop on close. "external" = tunnel already running externally, set local: true in capabilities only.'),
     navigationUrl: z.string().optional().describe('URL to navigate to after starting'),
+    uploadMedia: z.array(z.string()).optional().describe('LambdaTest media files to inject during the session (lt://MEDIA... URLs, LambdaTest only)'),
     capabilities: z.record(z.string(), z.unknown()).optional().describe('Additional capabilities to merge'),
   },
 };
@@ -91,6 +92,7 @@ type StartSessionArgs = {
   appiumConfig?: { host?: string; port?: number; path?: string; protocol?: string };
   browserstackLocal?: boolean | 'external';
   navigationUrl?: string;
+  uploadMedia?: string[];
   capabilities?: Record<string, unknown>;
 };
 
