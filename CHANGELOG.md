@@ -1,5 +1,93 @@
 # Changelog
 
+## 2.0.0 (2026-06-22)
+
+### ⚠ BREAKING CHANGES
+
+* Consolidated session management tooling into 1 single tool.
+* Deleted tools: `get_visible_element`, `get_accessibility_tree`, `get_cookie`, `get_tabs`, `get_app_state`, etc. The READ tooling is mainly resources going forward.
+* Removed deprecated tools (`find_element`, `getElementText`, `longPress`, `isDisplayed`, `clickViaText`, etc.) and unused utilities (`mobile-selectors`, `get_orientation`, `lock_device`, etc.).
+
+### Features
+
+* Add `execute_script` tool for running browser JavaScript and Appium mobile commands ([ade4484](https://github.com/ravirajpal/wdio-mcp/commit/ade448441f67fdbaba3152f35508669503c6e42c))
+* Add `launch_chrome` tool for launching Chrome with remote debugging ([eab139c](https://github.com/ravirajpal/wdio-mcp/commit/eab139cc22c5e0c0956a154469f6c64adb0782d4))
+* Add `navigationUrl` support to `startBrowserTool` and default dimensions ([bae7ca7](https://github.com/ravirajpal/wdio-mcp/commit/bae7ca7362cbf5e1432a009496aa02aa389a807e))
+* Add `newCommandTimeout` support to session configuration ([ce09399](https://github.com/ravirajpal/wdio-mcp/commit/ce093996b47d581ebeda47f888693ee7607f1812))
+* Add `snapshot` subpath export and include lightweight element utilities ([e6afa09](https://github.com/ravirajpal/wdio-mcp/commit/e6afa09868bb663e969afbb719e466620b8b6010))
+* add attach_browser tool for CDP port connection ([5ad9923](https://github.com/ravirajpal/wdio-mcp/commit/5ad9923785ba1c1399a1eab730466ec758be3b0d))
+* Add browser accessibility tree support and improve element handling ([97a4a0f](https://github.com/ravirajpal/wdio-mcp/commit/97a4a0fb886a91f02e901acc5d671b6a89e1ab9a))
+* Add BrowserStack Local binary resource with supporting and enhance session handling ([447e266](https://github.com/ravirajpal/wdio-mcp/commit/447e266dbbecbea73c4aaecac446c0b55d981404))
+* Add cookie management and accessibility tree tools ([2068c8e](https://github.com/ravirajpal/wdio-mcp/commit/2068c8e04be0c06284e6e3802e9b30254a6b5647))
+* add emulate_device tool with BiDi guard and restore support ([49e8b77](https://github.com/ravirajpal/wdio-mcp/commit/49e8b770f1682a85968ce4f4e5a332566e8a3321))
+* Add ESLint, TypeScript checking, and Husky for linting; update dependencies ([30ccbc5](https://github.com/ravirajpal/wdio-mcp/commit/30ccbc5ff2615200cd77cd49db4b087abaa61c4a))
+* Add GitHub Actions for manual npm publishing, update naming, and improve documentation ([6f54819](https://github.com/ravirajpal/wdio-mcp/commit/6f54819ee90124bbe6a08b0e9a9d1c812e6ce2a1))
+* Add mobile app automation support with Appium integration ([7ffbfef](https://github.com/ravirajpal/wdio-mcp/commit/7ffbfef53cf65950bda0d45223e48713ff4d355c))
+* Add pagination support to `get-visible-elements` and `get-accessibility-tree` ([90517e0](https://github.com/ravirajpal/wdio-mcp/commit/90517e0d79ab79423ed38ab62eb96316788555bc))
+* Add support for iOS real device testing with UDID configuration ([f3a576b](https://github.com/ravirajpal/wdio-mcp/commit/f3a576bab812b01ea845c55a2ae7028fd25bb6ca))
+* add switch_frame tool for iframe navigation ([ae867a5](https://github.com/ravirajpal/wdio-mcp/commit/ae867a5988171289095b9591e0d3eea87ffe28a0))
+* add userDataDir param to attach_browser (default: /tmp/chrome-debug) ([7204dd0](https://github.com/ravirajpal/wdio-mcp/commit/7204dd0b77798241fd19a2f4cc31a0565767b6d0))
+* Add utility for cleaning objects and enhance element visibility tool ([c85de0a](https://github.com/ravirajpal/wdio-mcp/commit/c85de0a9a2a34edd0295c2ee6ddcaed4c54932e0))
+* allow custom appium capabilities in start_app_session ([5d8f91e](https://github.com/ravirajpal/wdio-mcp/commit/5d8f91e26e7969853b056bbf0862d2a527139d91))
+* allow start_browser custom capabilities ([8f10b60](https://github.com/ravirajpal/wdio-mcp/commit/8f10b6016ef59e6ce40286408eb996479f42bdac))
+* Default browser tool to headless mode and improve script usage guidance ([4ba256b](https://github.com/ravirajpal/wdio-mcp/commit/4ba256ba7c4a607fa1f3202ccae7f470d82107d1))
+* Enhance browser snapshot scripts with predefined selectors and removed noisy properties ([fd38790](https://github.com/ravirajpal/wdio-mcp/commit/fd387908320f3d776c4122e69906d256c883b375))
+* implement session step recording, history lifecycle, and WebdriverIO code generation ([6c41763](https://github.com/ravirajpal/wdio-mcp/commit/6c417632fe05414659119e8531bab7394d81318d))
+* Initial commit for v3.0.0 ([37831d1](https://github.com/ravirajpal/wdio-mcp/commit/37831d180d564cb0664d39dfaced928144f5a0da))
+* Integrate auto-start BrowserStack Local tunnel on session start & management ([5827a99](https://github.com/ravirajpal/wdio-mcp/commit/5827a99a57d621375d25d13fec1e9608ad5f8486))
+* Introduce BrowserStack provider and tools ([2904997](https://github.com/ravirajpal/wdio-mcp/commit/2904997e88432c779fa65aad0aa868e39c378b52))
+* Introduce MCP WebdriverIO server with core tools ([d69476c](https://github.com/ravirajpal/wdio-mcp/commit/d69476c916f9d2ecacedfe67ba1b9a4615e8531c))
+* Introduce StreamableHTTP transport at /mcp endpoint ([e00e34c](https://github.com/ravirajpal/wdio-mcp/commit/e00e34c749a1ce55d5b93befd543bc6cf97164d3))
+* Migrate to pnpm instead of npm/shrinkwrap ([b402fc0](https://github.com/ravirajpal/wdio-mcp/commit/b402fc058207c7ea32b85e2991683e9c66e89ec7))
+* Re-add `get_elements` tool for retrieving interactable page elements ([e0d94c7](https://github.com/ravirajpal/wdio-mcp/commit/e0d94c7737ef2520660158d2287e12f6d75bea9f))
+* Reintroduce tooling for a11y, app_state, contexts, cookies, tabs and screenshot querying ([80e8bfa](https://github.com/ravirajpal/wdio-mcp/commit/80e8bfa081efc77c9ce0baab5cdd17a9a3db2cd8))
+* Rework mobile locator generation ([7e290e1](https://github.com/ravirajpal/wdio-mcp/commit/7e290e11ba9155c17eaf1ad1dcbed0c68c8c101a))
+* Simplify session management and enhance Appium state control ([5ff2efc](https://github.com/ravirajpal/wdio-mcp/commit/5ff2efc948d7b924ecb4f8752dad8d5283e6945c))
+* Simplify tools and consolidate functionality ([ae66bc4](https://github.com/ravirajpal/wdio-mcp/commit/ae66bc48534f8a8b497554084431508d1d2b396f))
+
+### Bug Fixes
+
+* Account for `clickable` attribute in tag filter validation ([3918d22](https://github.com/ravirajpal/wdio-mcp/commit/3918d22aa5eb9188dc7726246af0993653107374))
+* Add `.js` extensions to type imports for ESM compatibility ([0dbc8b4](https://github.com/ravirajpal/wdio-mcp/commit/0dbc8b4bc96f6d4631a98c0ed6c9f859fa0d35a2))
+* Add authentication step for MCP Registry publishing ([610e364](https://github.com/ravirajpal/wdio-mcp/commit/610e36476e2c6c057deea0befdc15cae66f2fdcf))
+* Add support for external BrowserStack Local tunnel handling and dynamic connection configurations ([ef016bd](https://github.com/ravirajpal/wdio-mcp/commit/ef016bd05b680a3009f01c6a60efcb09347ff9c6))
+* Address issues with session management and code generation of new session tool ([9864253](https://github.com/ravirajpal/wdio-mcp/commit/98642537a76bf0d4cd503ab7226ccae41ea7438e))
+* CallToolResult import ([1765f04](https://github.com/ravirajpal/wdio-mcp/commit/1765f048ed23cf1c1a8db6be7afd69c7e6a237c8))
+* Change mcp-publisher installation method ([94d1d11](https://github.com/ravirajpal/wdio-mcp/commit/94d1d11cddf6dcc47c0781a419d4869d3fa7f8cc))
+* Handle existing BrowserStack tunnel gracefully in `start` method ([0084513](https://github.com/ravirajpal/wdio-mcp/commit/00845133beff9a32c2c5f9c047cbc0bcfbfae5bb))
+* Improve XML node comparison logic for cross-traversal compatibility ([11e8291](https://github.com/ravirajpal/wdio-mcp/commit/11e8291e97ba84a9a835d47012f4dfb3f232a586))
+* Include `protocol` in appium configuration for local provider ([e1596df](https://github.com/ravirajpal/wdio-mcp/commit/e1596df5a12ff8c89e486fb24983b5a9a6f94c15))
+* release pipeline ([570f2ee](https://github.com/ravirajpal/wdio-mcp/commit/570f2ee7ca3eeb58684efdd26db1e70e4ce98e09))
+* Remove pnpm version from release workflow ([2344fe6](https://github.com/ravirajpal/wdio-mcp/commit/2344fe6e2c61f1dff2f7196bdcda60d45afc55b7))
+* Remove ResourceTemplate usage and simplify resource handlers ([59f83a5](https://github.com/ravirajpal/wdio-mcp/commit/59f83a539794601af3863f3a289a0a80f8a1e2bb))
+* Update documentation and package configuration for MCP integration while cleaning up package.json ([43f0914](https://github.com/ravirajpal/wdio-mcp/commit/43f09142acd5cbc1aedb317ac76f676d847c217b))
+* update README.md ([c1b4e72](https://github.com/ravirajpal/wdio-mcp/commit/c1b4e728851eb64037cd8f23f7c6d6c8990d4415))
+* Use `z.coerce` to correctly manage booleans with OpenCode and Codex ([ff37196](https://github.com/ravirajpal/wdio-mcp/commit/ff371966108fc2cff011be22fd571dc6d45be51b))
+* Use browser.$() for element instead of $() ([630201b](https://github.com/ravirajpal/wdio-mcp/commit/630201b140b3f6d399ef452796c3a71feca8011a))
+* Use correct abstraction for attach_browser, start_app_session, start_browser tools ([9cebdbd](https://github.com/ravirajpal/wdio-mcp/commit/9cebdbd81237c89cc1dd03f88f05dc0b07df460b))
+* Use correct project naming for package.json ([0a79f1f](https://github.com/ravirajpal/wdio-mcp/commit/0a79f1f715ed076a3d7855c5be87bb7297119251))
+* **xmldom:** Fix type errors by importing XMLDocument, XMLElement, XMLNode from @xmldom/xmldom ([c11c204](https://github.com/ravirajpal/wdio-mcp/commit/c11c20441f7ce9ec09c54d3b07cdc7dd8ef29b71))
+
+### Performance
+
+* Add image processing for screenshots with `sharp` ([e396b0a](https://github.com/ravirajpal/wdio-mcp/commit/e396b0acf05bacad894c9e44e7e3cf8af61524a8))
+* Use uniform field structures for TOON tabular format across tools and scripts ([1b70736](https://github.com/ravirajpal/wdio-mcp/commit/1b70736305a00d62afd4547d81d3116144c8822e))
+
+### Refactoring
+
+* Add annotation support for tools to enhance metadata usage ([c196da2](https://github.com/ravirajpal/wdio-mcp/commit/c196da2c9c0c197fbe43196b721633e5a741ea3a))
+* Enhance Appium session options with auto-permission and alert handling ([61bb55a](https://github.com/ravirajpal/wdio-mcp/commit/61bb55ac9df0c7aed7e421218a30e976c3a82d8b))
+* Improve locator generation for mobile platforms inspired by `appium-mcp` ([a9d76d1](https://github.com/ravirajpal/wdio-mcp/commit/a9d76d130942e7cc73c6cd237e0d427d5eb5062d))
+* Mark tool errors with `isError` flag for consistent error detection and handling throughout the codebase ([186a03a](https://github.com/ravirajpal/wdio-mcp/commit/186a03a21ce539101f228e0de1e3456854bbcd14))
+* Modularize and clean up locator generation and XML parsing components ([e09e9aa](https://github.com/ravirajpal/wdio-mcp/commit/e09e9aaeb9037784610c5df1395f0889bdae3127))
+* Refine session lifecycle handling and simplify logic ([4a301fe](https://github.com/ravirajpal/wdio-mcp/commit/4a301feea864474b9d2be8996763f9bb1c0ee934))
+* Rename scripts for clarity and update imports ([adaa015](https://github.com/ravirajpal/wdio-mcp/commit/adaa015c8f174fbdb4c1cb918cc171dfd86295e9))
+* Replace `null` with `undefined` for optional properties in `get-interactable-elements.ts` and include all elements regardless of viewport status ([2b3c7c7](https://github.com/ravirajpal/wdio-mcp/commit/2b3c7c721c006b82e9eba764a914541b3e15fda1))
+* Replace tool argument exports with unified tool definitions ([93a0f4e](https://github.com/ravirajpal/wdio-mcp/commit/93a0f4eba3c3e255fad72de16c73dafb783ec1de))
+* Separate MCP resources from tools ([e1be10f](https://github.com/ravirajpal/wdio-mcp/commit/e1be10fbd2a629b388c8e8aa3162dd1b53cb1e16))
+* Separate session steps (in JSON) and code generation (in JS) in Resources ([ad7ff03](https://github.com/ravirajpal/wdio-mcp/commit/ad7ff0318ada815720d07e424b1409033007fee3))
+* Simplify `cookies.tool` handling and update object structures ([80291ec](https://github.com/ravirajpal/wdio-mcp/commit/80291ecddf7327fa561afa9d840a08bd6341677f))
+
 ## [3.4.4](https://github.com/webdriverio/mcp/compare/v3.4.3...v3.4.4) (2026-05-06)
 
 ## [3.4.3](https://github.com/webdriverio/mcp/compare/v3.4.2...v3.4.3) (2026-05-06)
