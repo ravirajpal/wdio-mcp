@@ -1,6 +1,7 @@
 import { existsSync, createReadStream } from 'node:fs';
 import { z } from 'zod';
 import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { ToolDefinition } from '../types/tool';
 import { getBrowser } from '../session/state';
 
