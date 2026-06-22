@@ -1,4 +1,4 @@
-name: Manual NPM Publish
+name: GitHub Release
 
 on:
   workflow_dispatch:
@@ -12,20 +12,12 @@ on:
           - patch
           - minor
           - major
-      distTag:
-        description: 'NPM tag (e.g. use "next" to release a test version)'
-        required: true
-        default: "latest"
-
-env:
-  NPM_CONFIG_PROVENANCE: true
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -41,12 +33,11 @@ jobs:
         with:
           cache: 'pnpm'
           node-version-file: .nvmrc
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup Git
         run: |
-          git config --global user.email "bot@webdriver.io"
-          git config --global user.name "WebdriverIO Release Bot"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Release Bot"
 
       - name: Install Dependencies
         run: pnpm install
@@ -55,7 +46,6 @@ jobs:
         run: pnpm run bundle
 
       - name: Release
-        run: npx release-it ${{github.event.inputs.releaseType}} --ci --no-git.requireCleanWorkingDir --npm.tag=${{github.event.inputs.distTag}}
+        run: npx release-it ${{github.event.inputs.releaseType}} --ci --no-git.requireCleanWorkingDir
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_REGISTRY: https://registry.npmjs.org/
