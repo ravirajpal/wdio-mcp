@@ -8,7 +8,7 @@
     "releaseName": "v${version}"
   },
   "npm": {
-    "skipChecks": true
+    "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
