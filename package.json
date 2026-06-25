@@ -1,13 +1,16 @@
 {
-  "name": "@rrajpal/mcp",
-  "mcpName": "io.github.rrajpal/mcp",
+  "name": "@ravirajpal/mcp",
+  "mcpName": "io.github.ravirajpal/mcp",
   "author": "Ravi Rajpal",
   "repository": {
     "type": "git",
-    "url": "git://github.com/rrajpal/wdio-mcp.git"
+    "url": "git://github.com/ravirajpal/wdio-mcp.git"
   },
   "version": "2.0.1",
   "description": "MCP server with WebdriverIO for browser and mobile app automation (iOS/Android via Appium)",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./lib/server.js",
   "module": "./lib/server.js",
   "types": "./lib/server.d.ts",
