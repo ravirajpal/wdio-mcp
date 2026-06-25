@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.0](https://github.com/ravirajpal/wdio-mcp/compare/v2.0.1...v3.0.0) (2026-06-25)
+
+### Features
+
+* add framework tool for wrapped element interaction ([dbb4f32](https://github.com/ravirajpal/wdio-mcp/commit/dbb4f320ab4535aece50f3b393c115e860c5941c))
+
 ## [2.0.1](https://github.com/ravirajpal/wdio-mcp/compare/v2.0.0...v2.0.1) (2026-06-22)
 
 ## 2.0.0 (2026-06-22)
