@@ -1,10 +1,24 @@
 # WebDriverIO MCP Server
 
-> **Fork of [webdriverio/mcp](https://github.com/webdriverio/mcp)** — extended with LambdaTest support and distributed directly from GitHub (not published to npm).
+> Extended fork of [webdriverio/mcp](https://github.com/webdriverio/mcp) with LambdaTest support, BrowserStack integration, planner tools, and session recording.
 
 A Model Context Protocol (MCP) server that enables AI assistants to interact with web browsers and mobile applications using WebDriverIO. Automate Chrome, Firefox, Edge, and Safari browsers plus iOS and Android apps — all through a unified interface.
 
 ## Installation
+
+Install from npm:
+
+```bash
+npx @ravirajpal/wdio-lt-mcp
+```
+
+Or install directly from GitHub:
+
+```bash
+npx github:ravirajpal/wdio-mcp
+```
+
+> If you publish under the new npm package name, replace the GitHub install with `npx @ravirajpal/wdio-lt-mcp`.
 
 Add the following configuration to your MCP client settings:
 
@@ -18,7 +32,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS), 
   "mcpServers": {
     "wdio-mcp": {
       "command": "npx",
-      "args": ["github:ravirajpal/wdio-mcp"]
+      "args": ["@ravirajpal/wdio-lt-mcp"]
     }
   }
 }
@@ -30,7 +44,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS), 
 <summary>VS Code (Copilot)</summary>
 
 ```bash
-code --add-mcp '{"name":"wdio-mcp","command":"npx","args":["github:ravirajpal/wdio-mcp"]}'
+code --add-mcp '{"name":"wdio-mcp","command":"npx","args":["@ravirajpal/wdio-lt-mcp"]}'
 ```
 
 </details>
@@ -45,7 +59,7 @@ Go to `Cursor Settings` → `MCP` → `Add new MCP Server`, or create `.cursor/m
   "mcpServers": {
     "wdio-mcp": {
       "command": "npx",
-      "args": ["github:ravirajpal/wdio-mcp"]
+      "args": ["@ravirajpal/wdio-lt-mcp"]
     }
   }
 }
@@ -60,7 +74,7 @@ Go to `Cursor Settings` → `MCP` → `Add new MCP Server`, or create `.cursor/m
 By default the server uses **stdio** (subprocess) transport. For clients that cannot launch subprocesses, enable HTTP transport:
 
 ```bash
-npx github:ravirajpal/wdio-mcp --http --port 3000
+npx @ravirajpal/wdio-lt-mcp --http --port 3000
 ```
 
 | Flag | Default | Description |
@@ -115,7 +129,7 @@ Or add them to your MCP client config:
   "mcpServers": {
     "wdio-mcp": {
       "command": "npx",
-      "args": ["github:ravirajpal/wdio-mcp"],
+      "args": ["@ravirajpal/wdio-lt-mcp"],
       "env": {
         "BROWSERSTACK_USERNAME": "your_username",
         "BROWSERSTACK_ACCESS_KEY": "your_access_key"
@@ -224,7 +238,7 @@ Or add them to your MCP client config:
   "mcpServers": {
     "wdio-mcp": {
       "command": "npx",
-      "args": ["github:ravirajpal/wdio-mcp"],
+      "args": ["@ravirajpal/wdio-lt-mcp"],
       "env": {
         "LT_USERNAME": "your_username",
         "LT_ACCESS_KEY": "your_access_key"
@@ -385,6 +399,16 @@ lt_inject_image({
 | `rotate_device` | Rotate to portrait or landscape |
 | `hide_keyboard` | Hide on-screen keyboard |
 | `set_geolocation` | Set device GPS location |
+
+### Planner Tools
+
+| Tool | Description |
+|---|---|
+| `write_plan` | Save a markdown plan after exploring the app to `.wdio-mcp/plans` |
+| `read_plan` | Load the latest saved plan; generator agents call this first before writing code |
+| `confirm_plan` | Confirm which plan file will be used without loading full content |
+
+The planner tools support Explorer/Generator workflows by persisting a human-readable, LLM-friendly test plan between sessions. Use `write_plan` after exploration, then `confirm_plan` and `read_plan` before generation.
 
 ### BrowserStack Tools
 

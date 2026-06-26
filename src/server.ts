@@ -77,6 +77,11 @@ import { appStateTool, appStateToolDefinition } from './tools/app-state.tool';
 import { getCookiesTool, getCookiesToolDefinition } from './tools/get-cookies.tool';
 import { runScriptTool, runScriptToolDefinition } from './tools/run-script.tool';
 import { runFrameworkScriptToolDefinition, runFrameworkScriptTool } from './tools/run-framework-script.tool';
+import {
+  writePlanTool, writePlanToolDefinition,
+  readPlanTool, readPlanToolDefinition,
+  confirmPlanTool, confirmPlanToolDefinition,
+} from './tools/planner.tool';
 
 console.log = (...args) => console.error('[LOG]', ...args);
 console.info = (...args) => console.error('[INFO]', ...args);
@@ -167,6 +172,10 @@ function createServer(): McpServer {
   registerTool(getCookiesToolDefinition, getCookiesTool);
   registerTool(runScriptToolDefinition, runScriptTool);
   registerTool(runFrameworkScriptToolDefinition, runFrameworkScriptTool);
+
+  registerTool(writePlanToolDefinition, writePlanTool);
+  registerTool(readPlanToolDefinition, readPlanTool);
+  registerTool(confirmPlanToolDefinition, confirmPlanTool);
 
   registerResource(sessionsIndexResource);
   registerResource(sessionCurrentStepsResource);

@@ -1,6 +1,6 @@
 {
-  "name": "@ravirajpal/mcp",
-  "mcpName": "io.github.ravirajpal/mcp",
+  "name": "@ravirajpal/wdio-lt-mcp",
+  "mcpName": "io.github.ravirajpal/wdio-lt-mcp",
   "author": "Ravi Rajpal",
   "repository": {
     "type": "git",
