@@ -4,8 +4,8 @@
  * Drop this file into your src/tools/ directory.
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { z } from 'zod';
 import type { ToolDefinition } from '../types/tool';
 
